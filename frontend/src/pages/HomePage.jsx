@@ -3,6 +3,36 @@ import { Link } from "react-router-dom";
 import { api } from "../api/api";
 import { useAuth } from "../auth/AuthContext";
 
+const DOC_PREFIX = "__DOC_BLOCKS__";
+
+function getDescriptionPreview(descriptionText) {
+  if (!descriptionText) {
+    return "";
+  }
+
+  if (!descriptionText.startsWith(DOC_PREFIX)) {
+    return descriptionText;
+  }
+
+  try {
+    const json = descriptionText.slice(DOC_PREFIX.length);
+    const blocks = JSON.parse(json);
+
+    if (!Array.isArray(blocks)) {
+      return descriptionText;
+    }
+
+    return blocks
+      .filter((block) => block?.type === "description")
+      .map((block) => String(block.content ?? "").trim())
+      .filter(Boolean)
+      .join(" ");
+  } catch (error) {
+    console.error("Failed to parse description preview", error);
+    return descriptionText;
+  }
+}
+
 function formatDate(value) {
   return new Date(value).toLocaleDateString("en-US", {
     year: "numeric",
@@ -255,7 +285,9 @@ export default function HomePage() {
                     <h2>{cmd.title}</h2>
                   </div>
 
-                  <p className="card-description">{cmd.description}</p>
+                  <p className="card-description">
+                    {getDescriptionPreview(cmd.description)}
+                  </p>
 
                   <div className="card-bottom">
                     <div className="label-row">
