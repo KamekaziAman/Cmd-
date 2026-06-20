@@ -1,8 +1,6 @@
 import axios from "axios";
 
-export const api = axios.create({
-  baseURL:
-    import.meta.env.VITE_API_BASE_URL || "https://cmdo-isj8.onrender.com/api/",
+export const api = axios.create({ "https://cmdo-isj8.onrender.com/api/commands",
 });
 
 api.interceptors.request.use((config) => {
