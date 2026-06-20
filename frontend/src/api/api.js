@@ -1,6 +1,7 @@
 import axios from "axios";
 
-export const api = axios.create({ "https://cmdo-isj8.onrender.com/api/commands",
+export const api = axios.create({
+  baseURL: "https://cmdo-isj8.onrender.com/api/",
 });
 
 api.interceptors.request.use((config) => {
