@@ -1,7 +1,11 @@
 import axios from "axios";
 
+const defaultApiBaseUrl = import.meta.env.DEV
+  ? "http://127.0.0.1:8000/api/"
+  : "https://cmdo-isj8.onrender.com/api/";
+
 export const api = axios.create({
-  baseURL: "https://cmdo-isj8.onrender.com/api/",
+  baseURL: import.meta.env.VITE_API_BASE_URL || defaultApiBaseUrl,
 });
 
 api.interceptors.request.use((config) => {
